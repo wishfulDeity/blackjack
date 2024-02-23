@@ -1,5 +1,5 @@
 # Python Blackjack
-Singleplayer Blackjack in Python 3.11
+Singleplayer Blackjack in Python 3.11 (extremely unfinished)
 
 ## A Word of Warning:
 This might be worst code written by a human. I'm not kidding, it's garbage.
