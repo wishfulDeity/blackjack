@@ -10,7 +10,8 @@ class Player:
         """
         self.hand = use_hand
 
-    def hit(self, use_deck=[], amount=1):
+
+    def hit(self, use_deck, amount=1):
         """Does a hit (Draws card)
 
         Args:
@@ -20,10 +21,17 @@ class Player:
         for i in range(amount):
             drawn_card = random.choice(use_deck)
             drawn_card_index = use_deck.index(drawn_card)
-            self.hand.append(drawn_card)
-            use_deck.remove(drawn_card_index)
+            self.hand.append(use_deck.pop(drawn_card_index))
 
+
+    # NOTE: I hate how this is implemented.
+    # The fact that this works is nothing short of a miracle.
     def hand_value(self):
+        """Gets the total value of the hand.
+
+        Returns:
+            int: The total value of the hand
+        """
         total_hand = 0
         for card in self.hand:
             try:
@@ -31,7 +39,7 @@ class Player:
             except ValueError:
                 if card in ["j", "q", "k"]:
                     total_hand += 10
-                elif card == "a":  # TODO: Do this in literally any other way?
+                elif card == "a":
                     if total_hand > 10:
                         total_hand += 1
                     else:
@@ -39,7 +47,7 @@ class Player:
         return total_hand
 
 
-class DeckOfCards:
+class CardDeck:
     def __init__(self, deck_count=1) -> None:
         """Create a card deck with `deck_count` packs in it
 
@@ -47,7 +55,7 @@ class DeckOfCards:
             deck_count (int, default=1): The amount of packs to include in the deck
         """
         # Hardcoded cards because screw you that's why
-        # Also a deck of cards GENERALLY doesn't change that much
+        # Also a deck of cards GENERALLY doesn't change that much, so...
         blackjack_cards = [
             "a",
             "2",
@@ -67,9 +75,12 @@ class DeckOfCards:
         new_deck = []
 
         # Add a whole deck `deck_count` times
+        # NOTE: Never allow me within 100m of a laptop again.
         for decks in range(deck_count):
-            for suit in range(4):  # Each deck has 4 suits
-                for card in range(len(blackjack_cards)):  # Add cards to the deck
+            # Each deck has 4 suits
+            for suit in range(4):
+                # Add cards to the deck
+                for card in range(len(blackjack_cards)):
                     new_deck.append(blackjack_cards[card])
 
         self.cards = new_deck
@@ -78,11 +89,11 @@ class DeckOfCards:
         return len(self.cards)
 
 
-main_deck = DeckOfCards()
+main_deck = CardDeck()
 
 player1 = Player()
-player1.hit(main_deck)
+player1.hit(main_deck.cards)
 
-
+print(player1.hand)
 print(player1.hand_value())
 print(main_deck.cards)
